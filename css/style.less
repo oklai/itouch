@@ -1,0 +1,184 @@
+@import url('../itouch/itouch.css');
+@import url('../itouch/animation.css');
+
+*{
+  margin:0;padding:0;
+}
+ul,ol{list-style:none}
+img{border:none}
+body{
+	font: 13px/22px 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, 'Hiragino Sans GB', sans-serif;
+	color:@normalColor;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -webkit-text-size-adjust: none;
+}
+a{
+  color:@normalColor;
+  outline:none;
+  text-decoration:none;
+}
+.hideText(){
+  overflow:hidden;
+  line-height:999px;
+}
+
+.clearfix(){
+  *zoom:1;
+  &:after{
+    display:block;clear:both;content:"\0020";visibility:hidden;height:0
+   } 
+}
+
+@normalColor:#333;
+@weakColor:#999;
+@linehighColor:#F30;
+@titleColor:#000;
+
+.backgroundMaker(@startColor,@endColor){
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@startColor), color-stop(100%,@endColor)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, @startColor 0%,@endColor 100%); /* Chrome10+,Safari5.1+ */
+}
+
+@import url('icon.less');
+
+/*diy style*/
+.panel-head{
+  .backgroundMaker(#7d7e7d,#0e0e0e);
+}
+.index_nav{
+  position:relative;height:42px;line-height:42px;
+  .backgroundMaker(#FFFFFF,#eeeeee);
+  margin-top:10px;
+  box-shadow:0 0 5px #bbb;
+  border-radius:5px;
+}
+.index_nav .item{margin-right:50px;font-weight:bold;font-size:16px;}
+.index_nav .item li{float:left;width:50%;text-align:center}
+.index_nav .item li:first-child{box-shadow:1px 0px 0px #DDD}
+.index_nav .item li:last-child{box-shadow:1px 0px 0px #DDD,-1px 0px 0px #FFF}
+.index_nav .item span{color:@weakColor;font-size:15px;position:relative;top:2px;left:2px}
+.index_nav .search{position:absolute;right:0;width:50px;height:42px;text-align:center;box-shadow:-1px 0px 0px #FFF}
+
+.index_slider{margin-top:10px}
+.index_slider img{width:100%;height:150px}   
+
+.index_category{margin-top:10px;}
+.index_category li{height:60px;margin-bottom:10px;color:@weakColor;position:relative;box-shadow:0 0 5px #bbb;border-radius:5px;}
+.index_category .img{
+  display:block;width:73px;height:61px;
+  float:left;background:url(../img/home_pic_normal.jpg) no-repeat;
+  .hideText;
+}
+.index_category .info{float:left;margin-left:10px;}
+.index_category .info_title{color:@titleColor;font-size:15px;}
+.index_category .info_title span{color:@weakColor;font-size:13px;position:relative;top:2px;left:2px}
+.index_category .ui-icon{position:absolute;right:0;top:50%;margin-top:-18px;}
+
+.copyright{
+  margin-top:20px;text-align:center;
+  color:@weakColor;
+}
+
+/*List page*/
+.list_filter{
+  margin-top:10px;
+  .clearfix;
+}
+.list_filter li{float:left;width:50%;}
+.list_filter .bar{
+  margin:0 auto;
+  width: 142px;height: 28px;line-height:28px;text-align:center;
+  border-radius:5px;
+  border:1px solid #DDD;
+}
+.prolist{
+  margin-top:10px;
+  .clearfix;
+}
+.prolist li{
+  float:left;
+  width:50%;
+  text-align:center;
+  margin-bottom:20px
+}
+.prolist .pro_name{
+  color:@titleColor;
+  font-size:14px;
+  font-weight:normal;
+}
+.prolist .pro_price{
+  color:@weakColor;
+}
+.list_foot{padding-top:10px}
+.bt_getmore{
+  display:block;
+  margin:0 auto;
+  width: 142px;height: 28px;line-height:28px;text-align:center;
+  border-radius:5px;
+  border:1px solid #DDD;
+}
+
+/*preview*/
+.preview_head{margin-top:10px;position:relative}
+.preview_head .brand{
+  .prolist > .pro_name;
+}
+.preview_head .price{
+  .prolist > .pro_price
+}
+.preview_head .infoico{
+  position: absolute;right: 15px;top: 9px;
+  width:26px;height:26px;line-height:30px;
+  border-radius: 13px;
+  border: 1px solid #424242;
+  .backgroundMaker(#5b5b5b,#111);
+  box-shadow:0 1px 0 #767676 inset;
+}
+.preview_head .infoico .ui-icon{position:relative;left:-3px;top:-5px}
+
+
+.preview_slider{
+  width:255px;
+  height:255px;
+  margin:10px auto 0;
+}
+.preview_foot{
+  margin-top:10px;
+  position:relative;
+}
+.preview_foot .put2card{
+  float:right;
+  width:60px;height:30px;line-height:30px;
+  border-radius: 6px;
+  border: 1px solid #424242;
+  .backgroundMaker(#5b5b5b,#111);
+  box-shadow:0 1px 0 #767676 inset;
+  text-align:center;
+}
+.preview_foot .put2card .i_icon{position:relative;top:3px}
+ 
+.page_detail{background-color:#2e2e2e;color:#C0C0C0;}
+.detail_title{
+  height:40px;
+  line-height:40px;
+  font-size:14px
+}
+.page_card{
+  background-color:#2e2e2e;color:#C0C0C0;
+}
+ 
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<meta name="author" content="ethanlai" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<title>I Have U</title>
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="stylesheet" href="itouch/itouch.css" type="text/css" />
+		<link rel="stylesheet" href="css/style.css" type="text/css" />
+	</head>
+<body>
+<!-- #content -->	
+<div id="content" style="height: 395px; ">	
+	<!-- 首页 -->
+	<div class="panel current" id="index">
+		<div class="panel-head">
+		    <a href="javascript:;" class="ui-icon ui-icon-grid icon_shadow hd_leftbtn">Home</a>
+		    <h1>I Have U 测试</h1>
+		    <span class="mod_icon hd_rightbtn icon_shadow" data-role="link" data-href="/card/" data-transition="slidedown">
+		    	<span class="i_icon i_icon_card">card</span>
+		    </span>
+		</div>
+		<div class="panel-content" data-scroll="true">
+			<div class="panel-content-inner">
+				<div class="index_nav">
+					<ul class="item">
+						<li data-role="link" data-href="/preview/" data-title="最新">最新<span>NEW</span></li>
+						<li data-role="link" data-href="/list/" data-title="品牌">品牌<span>Brand</span></li>
+					</ul>
+					<div class="search">
+						<a href="javascript:;" class="ui-icon ui-icon-search icon-black">搜索</a>
+					</div>
+				</div>
+				
+				<div class="index_slider">
+					<a href="javascript:;" data-href="/preview/" data-role="link" title="Versace"><img src="http://static.gtimg.com/img/opr/201206/11/zoe/785x220.jpg" alt="" /></a>
+				</div>
+				
+				<div class="index_category">
+					<ul>
+						<li data-role="link" data-href="/list/" data-title="男士">
+							<span class="img">男士</span>
+							<div class="info">
+								<h3 class="info_title">男士<span>men</span></h3>
+								<p>箱包，上衣，护肤，太阳镜</p>
+							</div>
+							<span class="ui-icon ui-icon-arrow-r icon-black">查看</span>
+						</li>
+						<li data-role="link" data-href="/list/?sex=woman" data-title="女士">
+							<span class="img">女士</span>
+							<div class="info">
+								<h3 class="info_title">女士<span>Women</span></h3>
+								<p>箱包，上衣，护肤，太阳镜</p>
+							</div>
+							<span class="ui-icon ui-icon-arrow-r icon-black">查看</span>
+						</li>
+						<li data-role="link" data-href="/list/?type=furniture" data-title="家具">
+							<span class="img">家具</span>
+							<div class="info">
+								<h3 class="info_title">家具<span>Women</span></h3>
+								<p>箱包，上衣，护肤，太阳镜</p>
+							</div>
+							<span class="ui-icon ui-icon-arrow-r icon-black">查看</span>
+						</li>
+					</ul>
+				</div>
+				<div class="copyright">
+					webapp demo by Ethanlai
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /首页 -->
+	
+	<!-- 列表模板 -->
+	<script type="text/template" id="Temp_prolist">
+		{{#items}}
+		<li>
+			<a href="javascript:;" data-role="link" data-href="/preview/" title="Cindy"><img src="{{img}}" alt="" /></a>
+			<h3 class="pro_name">{{name}}</h3>
+			<p class="pro_price">￥{{price}}</p>
+		</li>
+		{{/items}}
+	</script>
+	<!-- /列表模板 -->
+	<!-- 列表页 -->
+	<div class="panel page_list">
+		<div class="panel-head">
+			<a href="javascript:;" class="ui-icon ui-icon-back icon_shadow hd_leftbtn" data-role="back">back</a>
+		    <h1>I Have U 测试</h1>
+		    <span class="mod_icon hd_rightbtn icon_shadow" data-role="link" data-href="/card/" data-transition="slidedown">
+		    	<span class="i_icon i_icon_card">card</span>
+		    </span>
+		</div>
+		<div class="panel-content" data-scroll="true">
+			<div class="panel-content-inner">
+				<ul class="list_filter">
+					<li>
+						<div class="bar">
+							排序：默认
+						</div>
+					</li>
+					<li>
+						<div class="bar">
+							筛选
+						</div>
+					</li>
+				</ul>
+				<!-- /商品列表模型 -->
+				<ul class="prolist"></ul>
+				<div class="list_foot">
+					<a href="javascript:;" class="bt_getmore">加载更多</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /列表页 -->
+
+	<!-- 预览页 -->
+	<script type="text/template" id="Temp_preview">
+		<div class="panel page_preview">
+			<div class="panel-head">
+				<a href="javascript:;" class="ui-icon ui-icon-back icon_shadow hd_leftbtn" data-role="back">back</a>
+			    <h1>商品详情</h1>
+			    <span class="mod_icon hd_rightbtn icon_shadow" data-role="link" data-href="/card/" data-transition="slidedown">
+			    	<span class="i_icon i_icon_card">card</span>
+			    </span>
+			</div>
+			<div class="panel-content" data-scroll="true">
+				<div class="panel-content-inner">
+					<div class="preview_head">
+						<p class="brand">{{name}}</p>
+						<p class="price">￥{{price}}</p>
+						<span class="infoico" data-role="link" data-href="/detail/" data-transition="flipleft">
+							<span class="ui-icon ui-icon-info "></span>
+						</span>
+					</div>
+					<div class="preview_slider">
+						<ul>
+							<li><img src="{{img}}" alt="" /></li>
+						</ul>
+					</div>
+					<div class="preview_foot">
+						<span class="put2card" data-role="link" data-href="/card/" data-transition="slidedown">
+							<span class="i_icon i_icon_add2card"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</script>
+	
+	<div class="panel page_preview">
+		<div class="panel-head">
+			<a href="javascript:;" class="ui-icon ui-icon-back icon_shadow hd_leftbtn" data-role="back">back</a>
+		    <h1>商品详情</h1>
+		    <span class="mod_icon hd_rightbtn icon_shadow" data-role="link" data-href="/card/" data-transition="slidedown">
+		    	<span class="i_icon i_icon_card">card</span>
+		    </span>
+		</div>
+		<div class="panel-content" data-scroll="true">
+			<div class="panel-content-inner">
+				<div class="preview_head">
+					<p class="brand">Cindy</p>
+					<p class="price">￥3730</p>
+					<span class="infoico" data-role="link" data-href="/detail/" data-title="商品详情" data-transition="flipleft">
+						<span class="ui-icon ui-icon-info "></span>
+					</span>
+				</div>
+				<div class="preview_slider">
+					<ul>
+						<li><img src="pic/pic_2.jpg" alt="" /></li>
+					</ul>
+				</div>
+				<div class="preview_foot">
+					<span class="put2card" data-role="link" data-href="/card/" data-transition="slidedown">
+						<span class="i_icon i_icon_add2card"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /预览页 -->
+
+	<!-- 详情页模板-->
+	<script type="text/template" id="Temp_detail">
+		<div class="panel">
+			<div class="panel-head">
+				<a href="javascript:;" class="ui-icon ui-icon-back icon_shadow hd_leftbtn" data-role="back">back</a>
+			    <h1>商品说明</h1>
+			    <span class="mod_icon hd_rightbtn icon_shadow" data-role="link" data-href="/card/" data-transition="slidedown">
+			    	<span class="i_icon i_icon_card">card</span>
+			    </span>
+			</div>
+			<div class="panel-content" data-scroll="true">
+				<div class="panel-content-inner">
+					<div class="detail_title">
+						{{title}}
+					</div>
+					<div class="detail_text">
+						{{detail}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	<div class="panel page_detail">
+		<div class="panel-head">
+			<a href="javascript:;" class="ui-icon ui-icon-back icon_shadow hd_leftbtn" data-role="back">back</a>
+		    <h1>商品说明</h1>
+		    <span class="mod_icon hd_rightbtn icon_shadow" data-role="link" data-href="/card/" data-transition="slidedown">
+		    	<span class="i_icon i_icon_card">card</span>
+		    </span>
+		</div>
+		<div class="panel-content" data-scroll="true">
+			<div class="panel-content-inner">
+				<div class="detail_title">
+					商品标题
+				</div>
+				<div class="detail_text">
+					商品内容.... <br />商品内容.... <br />商品内容.... <br />商品内容.... <br />商品内容.... <br />商品内容.... <br />
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /详情页模板-->
+	
+	<!-- 购物车 -->
+	<div class="panel page_card">
+		<div class="panel-head">
+			<a href="javascript:;" class="ui-icon ui-icon-back icon_shadow hd_leftbtn" data-role="back">back</a>
+		    <h1>购物车</h1>
+		    <span class="mod_icon hd_rightbtn icon_shadow" data-role="link" data-href="/card/" data-transition="slidedown">
+		    	<span class="i_icon i_icon_card">card</span>
+		    </span>
+		</div>
+		<div class="panel-content" data-scroll="true">
+			<div class="panel-content-inner">
+				购物车...购物车...购物车...购物车...
+			</div>
+		</div>
+	</div>
+	<!-- /购物车 -->
+	
+	<!-- Panel Template HTML 
+	<div class="panel">
+		<div class="panel-head">
+			//head
+		</div>
+		<div class="panel-content">
+			<div class="panel-content-inner">
+				//the main content here 
+			</div>
+		</div>
+		<div class="panel-foot">
+			//footer
+		</div>
+	</div>
+	-->	
+	
+</div>
+<!-- /#content -->	
+
+<script src="js/zepto.js"></script>
+<script src="js/desktoptouch0.js"></script>
+<script src="js/mustache.min.js"></script>
+<script src="js/iscroll.min.js"></script>
+
+<script src="itouch/iTouch.js"></script>
+<script src="itouch/animation.js"></script>
+
+<script type="text/javascript">
+$(function(){
+	var MyApp=new iTouch({
+		indexPanel:$("#index"),
+	});
+	new iScroll($("#index .panel-content")[0],{hideScrollbar:true});
+	
+	function creatScroll(elm,panel){
+		if(!$(elm).data("scrolling")){
+			panel.scroller=new iScroll(elm,{hideScrollbar:true});
+			$(elm).data("scrolling",true);
+		}
+		return panel.scroller;
+	}
+	var listPage=MyApp.Panel.extend({
+		element:$('.page_list'),
+		init: function(panel){
+			var panelElm=$("#"+panel.uuid);
+			scroller=creatScroll(panelElm.find(".panel-content")[0],panel);
+
+			$.get("/json/list.json",function(json){
+				var data=$.parseJSON(json);
+				var htmlStr=$("#Temp_prolist").mustache(data);
+				var newElm=$(htmlStr);
+				panelElm.find(".prolist").append(newElm);
+				
+				scroller.refresh();
+				panel.refresh(newElm);
+			})
+		}
+	});	
+	
+	var previewPage=MyApp.Panel.extend({
+		//element:$('.page_preview'),
+		template:$("#Temp_preview"),
+		json:"/json/preview.json",
+		init: function(panel){
+			var panelElm=$("#"+panel.uuid);
+			scroller=creatScroll(panelElm.find(".panel-content")[0],panel);
+		}
+	});	
+	
+	var detailPage=MyApp.Panel.extend({
+		//element:$('.page_detail'),
+		template:$('#Temp_detail'),
+		json:'/json/detail.json',
+		init: function(panel){
+			var panelElm=$("#"+panel.uuid);
+			scroller=creatScroll(panelElm.find(".panel-content")[0],panel);
+		}
+	});	
+	
+	var cardPage=MyApp.Panel.extend({
+		element:$('.page_card'),
+		init: function(panel){
+			var panelElm=$("#"+panel.uuid);
+			scroller=creatScroll(panelElm.find(".panel-content")[0],panel);
+		}
+	});	
+
+	MyApp.Router.extend({
+		'/list/':listPage,
+		'/preview/':previewPage,
+		'/detail/':detailPage,
+		'/card/':cardPage
+	});
+})
+
+</script>	
+</body>
+</html>
