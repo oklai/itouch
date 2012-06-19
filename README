@@ -3,6 +3,7 @@ author:Ethanlai
 version:v1.0
 
 如何使用iTouch？
+
 在页面上引用一下文件:
 <link rel="stylesheet" href="itouch/itouch.css" type="text/css" />
 <link rel="stylesheet" href="itouch/animation.css" type="text/css" />
