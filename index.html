@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>iTouch by oklai</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/oklai/iTouch">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/oklai/iTouch/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/oklai/iTouch/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>iTouch</h1>
+          <p>让开发web app更简单！</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/oklai">oklai</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h3>如何使用iTouch？</h3>
+
+<p>在页面上引用一下文件:</p>
+
+<pre><code>&lt;link rel="stylesheet" href="itouch/itouch.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="itouch/animation.css" type="text/css" /&gt;
+&lt;script src="itouch/iTouch.js"&gt;&lt;/script&gt;
+&lt;script src="itouch/animation.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>面板页面HTML片段：</p>
+
+<pre><code>&lt;div class="panel"&gt;
+    &lt;div class="panel-head"&gt;
+        //head
+    &lt;/div&gt;
+    &lt;div class="panel-content"&gt;
+        &lt;div class="panel-content-inner"&gt;
+            //the main content here 
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="panel-foot"&gt;
+        //footer
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>创建一个App：</p>
+
+<pre><code>var MyApp=new iTouch({
+    indexPanel:$("#index"), //设定首页
+});
+
+//创建页面
+var page1=MyApp.Panel.extend({
+    element:$('#page_1'),
+    init: function(panel){
+        //console.log('page1 has show')
+    }
+})
+var page2=MyApp.Panel.extend({
+    element:$('#page_1'),
+    init: function(panel){
+        //console.log('page1 has show')
+    }
+})
+
+//绑定路由
+MyApp.Router.extend({
+    '/list/':page1,
+    '/view/':page2,
+});
+</code></pre>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
