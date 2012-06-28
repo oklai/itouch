@@ -2,15 +2,18 @@ iTouch.js
 author:Ethanlai
 version:v1.0
 
-如何使用iTouch？
+#如何使用iTouch？
 
-在页面上引用一下文件:
+##在页面上引用一下文件:
+```
 <link rel="stylesheet" href="itouch/itouch.css" type="text/css" />
 <link rel="stylesheet" href="itouch/animation.css" type="text/css" />
 <script src="itouch/iTouch.js"></script>
 <script src="itouch/animation.js"></script>
+```
 
-面板页面HTML片段：
+##面板页面HTML片段：
+```
 <div class="panel">
 	<div class="panel-head">
 		//head
@@ -24,10 +27,11 @@ version:v1.0
 		//footer
 	</div>
 </div>
+```
 
 
-
-创建一个App：
+##创建一个App：
+```
 var MyApp=new iTouch({
 		indexPanel:$("#index"), //设定首页
 	});
@@ -51,4 +55,4 @@ MyApp.Router.extend({
 	'/list/':page1,
 	'/view/':page2,
 });
-
+```

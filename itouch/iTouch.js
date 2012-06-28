@@ -1,286 +1,500 @@
-(function(window,undefined){
+(function(window,$,undefined){
 	"use strict"
 	
-	var iTouch=function(option){
-		//首页面
-		this.indexPanel=option.indexPanel||$("#content > .current")[0];
-		//当前页
-		this.activePanel=$(this.indexPanel);
-		//上一页
-		this.lastPanel=null;
-		this.hashMark='!';
+	var iTouchCore=function(options){
 		
-		//历史记录
-		this.HistoryStates=[];
-
+		var touchSelectors=["[data-role=link],[data-role=back]"],	//data-role类型集合
+			indexPanel=options.indexPanel||$("#content > .current")[0],	//首页面
+			activePanel=$(indexPanel),	//当前页
+			lastPanel=null,	//上一页
+			hashMark='!',
+			historyStates=[], //历史记录
+			defaults = {
+				debug: false,
+                defaultAnimation: 'slideleft',
+                animationDelay: 400,
+                loadingStart: function(){
+                	var loadingHTML = '<div class="itouch-loader"><span class="itouch-icon-loading spin"></span></div>';
+                	$(loadingHTML).appendTo(document.body);
+                },
+                loadingEnd: function(){
+                	$('.itouch-loader').remove();
+                }
+			}
+		
+		var settings = {};
+		for(var k in defaults){
+			settings[k] = options[k] || defaults[k]
+		}
+		//动画后执行时间
+		settings.animationDelay += 10;
+		
 		//路由集合
-		this.Router={};
-		var _Router=this.Router;
-		_Router.collection={};
-		_Router.extend=function(c){
+		var Router={};
+		Router.collection={};
+		Router.extend=function(c){
 			for(var k in c){
-				_Router.collection[k]=c[k];
+				Router.collection[k]=c[k];
 			}
 		}
-		_Router.add=function(route,panel){
-			_Router.collection[route]=panel;
+		Router.add=function(route,panel){
+			Router.collection[route]=panel;
 		}
 		
 		//创建Panel
-		var _this=this;
-		this.Panel={}
-		this.Panel.extend=function(model){
-			return new iTouch.Panel(model,_this);
+		var Panel=function(opt){
+			for(var k in opt){
+				this[k]=opt[k];
+			}
+			this.destroy=false;
+		}
+		Panel.prototype={
+			constructor: Panel,
+			render: function(parames, callback){
+				var _this=this;
+				
+				//添加Panel到页面
+				if(this.element){
+					//静态元素
+					doRender(this.element);
+				}else{
+					//模板元素
+					//销毁
+					this.destroy = true;
+
+					var _url = this.url,
+						_dataType = this.dataType || 'json',
+						_template = this.template;
+					
+					if(_dataType === 'html' && !_template){
+						//ajax载入页面内容
+						$.ajax({
+							url: _url,
+							data:  parames,
+							success: function(html){
+								var panelElem=$(html);
+								panelElem.appendTo('#content');
+								doRender(panelElem);
+							}
+						})
+						
+					} else{
+						
+						//填充数据并添加到页面
+						$.ajax({
+							url: _url,
+							data:  parames,
+							dataType: _dataType,
+							success: function(json){
+								var htmlStr=$(_template).mustache(json);
+								var panelElem=$(htmlStr);
+								panelElem.appendTo('#content');
+								doRender(panelElem);
+							}
+						})
+					}
+				}
+				//渲染页面
+				function doRender(panelElem){
+					//callback && init
+					callback&&callback(panelElem, _this);
+					_this.init&&_this.init(panelElem, _this);
+				}
+			}
+		}
+		Panel.extend=function(model){
+			return new Panel(model);
 		}
 		
-		//初始化应用
-		this.InitRoleType(document.body,this);
+		//添加首页至历史记录
+		historyStates[0]={
+			url: '/',
+			element: $(indexPanel),
+			destroy: false
+		};
+		//添加首页路由
+		Router.add('/', new Panel({
+			element: $(indexPanel)
+		}))
+		
+		//判断是否为空对象
+		function isEmptyObject(obj){
+			for(var name in obj){
+				return false;
+			}
+			return true;
+		}
+		
+		//获取当前URL参数
+		//return parames [Object]
+		function getParames(url){
+			var parames={};
+			var parameStr = url || location.hash;
+			var strArr=parameStr.split('?')[1];
+			if(!strArr) return null;
+			var strArr2=strArr.split('&');
+			strArr2.forEach(function(item){
+				var strArr3=item.split('=');
+				if(strArr3.length===2){
+					parames[strArr3[0]]=strArr3[1]
+				}
+			});
+			return isEmptyObject(parames)?null:parames;
+		}
+		
+		//调试
+		function warn(message){
+			if(settings.debug === true){
+				if($.support.touch){
+					if($('.itouch-warn').length > 0){
+						$('.itouch-warn').find('p')[0].innerHTML += '<br />'+message;
+						
+					}else{										
+						var warnHtml=$('<div class="itouch-warn"><span class="itouch-warn-close">×</span><p /></div>');
+						warnHtml.find('p').html(message);
+						warnHtml.find("span").bind('click',function(){
+							warnHtml.remove();
+						});
+						warnHtml.appendTo('body');
+					}
+				}else{
+					window.console && console.log(message);
+				}
+			}
+		}
+
+		//获取路由
+		function getPanel(url){
+			
+			//判断是否为根目录
+			if(url === '/') return Router.collection['/'];
+			
+			for(var k in Router.collection){
+				if(url.indexOf(k)===0&&k!=='/'){
+					return Router.collection[k];
+				}
+			}
+			
+			warn('未找到与url:'+url+'匹配的路由');	
+		}
+		
+		//销毁ajax页面
+		function removeAjaxPages(){
+			//remove destroy page
+			historyStates.forEach(function(item){
+				if(item.destroy) item.element.remove();
+			})
+			
+			//清空记录
+			historyStates = historyStates.slice(0, 1);
+		}
+		
+		//切换页面
+		function switchPanel(selector,transition,reverse){
+			//需求页对象
+			var fromPage=$(activePanel);
+			var toPage=$(selector);
+			
+			animationPanel(fromPage,toPage,transition,reverse);
+			if(!reverse){
+				toPage.data("transition",transition)
+			}
+			
+			//记录页面
+			lastPanel=fromPage;
+			activePanel=toPage;
+
+		}	
+		
+		//更改url hash 
+		function changeUrl(url){
+			window.location.hash=hashMark+url;
+		}
+		
+		//添加记录
+		function pushHistoryState(state){
+			historyStates.push(state);
+			changeUrl(state.url);
+		}
+		//返回
+		function doHistoryBack(){
+			
+			var _states=historyStates;
+			
+			//已返回到首页
+			if(_states.length === 1) return false;
+			
+			var targetState =_states[_states.length-2];
+			var targetSelector=targetState.element;
+			
+			var currentState=_states[_states.length-1];
+			var currentSelector=currentState.element;
+			
+			var transition=currentSelector.data('transition') || settings.defaultAnimation;
+			
+			switchPanel(targetSelector,transition,true);
+			
+			changeUrl(targetState.url);
+			
+			//销毁页面
+			if(currentState.destroy){
+				//在页面切换动画执行完后销毁 
+				setTimeout(function(){
+					currentSelector.remove();
+				}, settings.animationDelay)
+			}
+			
+			historyStates=_states.slice(0,_states.length-1);
+			
+		}
+		
+		//回首页
+		function goHomePage(transType){
+			
+			var transition=transType||settings.defaultAnimation;
+			
+			//切换页面
+			switchPanel($(indexPanel),transition,false);
+
+			//销毁ajax页面
+			setTimeout(removeAjaxPages, settings.animationDelay);
+		}
+		
+		//页面导航
+		function doNavigation(url,transType){
+			
+			var transition=transType||settings.defaultAnimation;
+			
+			//回首页
+			if(url === '/'){
+				goHomePage();
+				return false;
+			}
+				
+			//获取路由  切换pannel
+			var panel=getPanel(url);
+			if(!panel){
+				return false;
+			}
+			
+			//载入页面
+			settings.loadingStart(); //页面载入中执行事件
+			
+			var parames=getParames(url);
+			panel.render(parames, function(panelEle, panelObj){
+				
+				settings.loadingEnd();//页面载入完成执行事件
+				
+				var $el=$(panelEle),
+					destroy=panelObj.destroy;
+					
+				if($el.hasClass('current')) return false;
+				
+				//切换页面
+				switchPanel($el,transition,false);
+				
+				//添加到history
+				var state={
+					url: url,
+					element: $el,
+					destroy: destroy
+				};
+				pushHistoryState(state);
+			});
+		}
+		
+		//触摸事件
+		function touchStartHandler(e){
+			
+		    var $el = $(e.target),
+		        selectors = touchSelectors.join(',');
+			
+		    // Find the nearest tappable ancestor
+		    if (!$el.is(selectors)) {
+		        $el = $el.closest(selectors);
+		    }
+			
+		    // Make sure we have a tappable element
+		    if ($el.length) {
+		        $el.addClass('active');
+		    }
+		
+		    // Remove our active class if we move
+		    $el.on($.support.touch ? 'touchmove' : 'mousemove', function(){
+		        $el.removeClass('active');
+		    });
+		
+		    $el.on('touchend', function(){
+		        $el.unbind('touchmove mousemove');
+		    });
+		
+		}
+	
+		//点击事件
+		function tapHandler(e){
+			
+		    // target element
+		    var $el = $(e.target);
+			
+		    // 匹配可点击元素
+		    if (!$el.is(touchSelectors.join(', '))) {
+		        $el = $el.closest(touchSelectors.join(', '));
+		    }
+			
+		    // 判断是否有可点击元素
+		    if (!$el.length) {
+		        return false;
+		    }
+		    		
+		    // Init some vars
+		    var href = $el.data('href'),
+		        transition=$el.data('transition'),
+		        role=$el.data('role');
+			
+		    if (role==='back') {
+		        // User clicked or tapped a back button
+		        doHistoryBack();
+		        
+		    }
+		    if (!href) {
+		        $el.unselect();
+		        return false;
+		        
+		   } else {
+				//doNavigation
+				doNavigation(href,transition);
+				$el.unselect();
+		    }
+		}
+		
+		//检测浏览器是否支持transform3D
+		function supportForTransform3d() {
+			
+	        var head, body, style, div, result;
+	
+	        head = document.getElementsByTagName('head')[0];
+	        body = document.body;
+	
+	        style = document.createElement('style');
+	        style.textContent = '@media (transform-3d),(-o-transform-3d),(-moz-transform-3d),(-webkit-transform-3d){#itouch-3dtest{height:3px}}';
+	
+	        div = document.createElement('div');
+	        div.id = 'itouch-3dtest';
+	
+	        // Add to the page
+	        head.appendChild(style);
+	        body.appendChild(div);
+	
+	        // Check the result
+	        result = div.offsetHeight === 3;
+	
+	        // Clean up
+	        style.parentNode.removeChild(style);
+	        div.parentNode.removeChild(div);
+	
+	        return result;
+	    }
+
+		//动画切换
+		//support animation
+		//cubeleft、cuberight、dissolve、fade、flipleft、flipright、pop、swap、swapleft、slideup、slidedown、slideleft、slideright
+		function animationPanel(fromPage,toPage, animation, goingBack){
+			// Error check for target page
+		    if (toPage === undefined || toPage.length === 0) {
+		        throw('Target element is missing.');
+		        return false;
+		    }
+		
+		    // Error check for fromPage===toPage
+		    if (toPage.hasClass('current')) {        
+		    	throw('You are already on the page you are trying to navigate to.');
+		        return false;
+		    }
+		    
+		    var finalAnimationName=animation;
+		    if (goingBack) {
+		    	finalAnimationName = finalAnimationName.replace(/left|right|up|down|in|out/, reverseAnimation );
+		    }
+		
+		    fromPage.addClass(finalAnimationName + ' out');
+		    toPage.addClass(finalAnimationName + ' in current');
+		       
+		    setTimeout(function(){
+		    	fromPage.removeClass("current out "+finalAnimationName);
+		    	toPage.removeClass("in "+finalAnimationName);
+		    }, settings.animationDelay)
+		}
+		//获取反向动画
+		function reverseAnimation(animation) {
+		    var opposites={
+		        'up' : 'down',
+		        'down' : 'up',
+		        'left' : 'right',
+		        'right' : 'left',
+		        'in' : 'out',
+		        'out' : 'in'
+		    };
+		
+		    return opposites[animation] || animation;
+		}
+		    
+		//初始化页面
+		$(document).ready(function(){
+		    // Store some properties in a support object
+			if (!$.support) $.support = {};
+			
+		    $.support.animationEvents = (typeof window.WebKitAnimationEvent != 'undefined');
+		    $.support.touch = (typeof window.TouchEvent != 'undefined') && (window.navigator.userAgent.indexOf('Mobile') > -1);
+		    $.support.transform3d = supportForTransform3d();
+		    $.support.ios5 = /OS (5(_\d+)*) like Mac OS X/i.test(window.navigator.userAgent);
+
+		    // Define public jQuery functions
+		    $.fn.isExternalLink = function() {
+		        var $el = $(this);
+		        return ($el.attr('target') == '_blank' || $el.attr('rel') == 'external' || $el.is('a[href^="mailto:"], a[href^="tel:"], a[href^="javascript:"]'));
+		    };
+		
+		    $.fn.unselect = function(obj) {
+		        if (obj) {
+		            obj.removeClass('active');
+		        } else {
+		            $('.active').removeClass('active');
+		        }
+		    };	
+		    
+		    //委托触摸、点击事件
+		    var $body=$(document.body),
+		    	touchEventType = $.support.touch ? 'touchstart' : 'mousedown',
+		    	tapEventType = $.support.touch ? 'tap' : 'click';
+			$body
+				.bind(touchEventType, touchStartHandler)
+				.bind(tapEventType, tapHandler);
+			
+			//添加3d效果样式
+			$.support.transform3d&&$("#content").addClass("supports3d");
+			
+			//翻转屏幕时重置内容区高度
+			function orientationChangeHandler(){
+				$("#content").height($(window).height());
+				var orientation = Math.abs(window.orientation) == 90 ? 'landscape' : 'portrait';
+		        $('#content').removeClass('portrait landscape').addClass(orientation);
+			}
+			orientationChangeHandler();
+			window.addEventListener('orientationchange', orientationChangeHandler, false);
+		});
+		
+		var publicObj = {
+			Panel: Panel,
+			Router: Router,
+			getParames: getParames,
+			goHomePage: goHomePage
+		}
+		return publicObj;
 	};
 	
-	//获取路由
-	function getPanel(url,routerCollection){
-		for(var k in routerCollection){
-			if(url.indexOf(k)===0&&k!=='/'){
-				return routerCollection[k];
-			}
-		}
-		throw('未找到匹配的路由');	
+	//封装iTouch
+	var iTouch=function(options){
+		return iTouchCore(options);
 	}
-	
-	//切换页面
-	function switchPanel(selector,transition,reverse,app){
-		//需求页对象
-		var fromPage=$(app.activePanel);
-		var toPage=$(selector);
-		
-		animationPanel(fromPage,toPage,transition,reverse);
-		if(!reverse){
-			toPage.data("transition",transition)
-		}
-		
-		//记录页面
-		app.lastPanel=fromPage;
-		app.activePanel=toPage;
-	}	
-	//历史记录 
-	function changeUrl(url){
-		window.location.hash=url;
-	}
-	//添加记录
-	iTouch.prototype.pushHistoryState=function(state){
-		var app=this;
-		app.HistoryStates.push(state);
-		changeUrl(app.hashMark+state.url);
-	}
-	//返回
-	iTouch.prototype.doHistoryBack=function(){
-		var app=this;
-		
-		var _states=app.HistoryStates;
-		if(!_states.length) return false;
-		if(_states.length===1){
-			//回到首页面
-			var currentState=_states[_states.length-1];
-			var currentSelector=$("#"+currentState.uuid);
-			var transition=currentSelector.data('transition')||'slideleft';
-			
-			switchPanel(app.indexPanel,transition,true,app);
-			changeUrl(app.hashMark+'');
-			
-			//销毁页面
-			if(currentState.destroy){
-				//在页面切换动画执行完后销毁 
-				setTimeout(function(){
-					currentSelector.remove();
-				},1000)
-			}
-			
-			app.HistoryStates=[];
-			
-		}else{
-			////非首页
-			var targetState =_states[_states.length-2];
-			var targetSelector=$('#'+targetState.uuid);
-			
-			var currentState=_states[_states.length-1];
-			var currentSelector=$("#"+currentState.uuid);
-			
-			var transition=currentSelector.data('transition')||'slideleft';
-			
-			switchPanel(targetSelector,transition,true,app);
-			
-			changeUrl(app.hashMark+targetState.url);
-			
-			//销毁页面
-			if(currentState.destroy){
-				//在页面切换动画执行完后销毁 
-				setTimeout(function(){
-					currentSelector.remove();
-				},500)
-			}
-			
-			app.HistoryStates=_states.slice(0,_states.length-1);
-		}	
-	}
-
-	//注册data-role类型事件 Type: link、back、scroll
-	iTouch.prototype.InitRoleType=function(ele){
-		var app=this;
-		
-		//support for desktop
-		var eventType="ontouchstart" in window?"touchstart":"click";
-		//Type: link (data-role="link")
-		//链接类型动作
-		$(ele).find("[data-role=link]").bind(eventType,function(e){
-			var linkEle=$(this);
-			//防止重复点击
-			if(linkEle.data("touching")===true) return false;
-			linkEle.data("touching",true);
-
-			//避免touchmove时触发点击动作
-			var touchTimeout;
-			touchTimeout=setTimeout(doNavigatePanel,100);
-			linkEle.bind("touchmove",function(){
-				clearTimeout(touchTimeout);
-			});
-			
-			function doNavigatePanel(){
-				var url=linkEle.data('href')||linkEle.attr('href')||'';
-				var transition=linkEle.data('transition')||'slideleft';
-		
-				//获取路由  切换pannel
-				var panel=getPanel(url,app.Router.collection);
-				if(!panel){
-					return false;
-				}
-				//载入页面
-				panel.render(function($el,uuid,destroy){
-					if(uuid===$(app.activePanel).attr('id')) return false;
-					
-					//切换页面
-					switchPanel($el,transition,false,app);
-					linkEle.data("touching",false)
-					
-					//添加到history
-					var state={
-						url: url,
-						uuid: uuid,
-						destroy: destroy
-					};
-					app.pushHistoryState(state);
-				});
-				
-				
-			}
-			
-			e.preventDefault();
-			return false;
-		});
-		
-		//Type: link (data-role="link")
-		//后退类型动作
-		$(ele).find("[data-role=back]").bind(eventType,function(e){
-			app.doHistoryBack();
-			return false;
-		});
-	}
-
-	//获取当前URL参数
-	//return parames [Object]
-	function getParams(){
-		var parames={};
-		var strArr=location.hash.split('?')[1];
-		if(!strArr) return false;
-		var strArr2=strArr.split('&');
-		strArr2.forEach(function(item){
-			var strArr3=item.split('=');
-			if(strArr3.length===2){
-				parames[strArr3[0]]=strArr3[1]
-			}
-		});
-		return isEmptyObject(parames)?false:parames;
-	}
-	//判断是否为空对象
-	function isEmptyObject(obj){
-		for(var name in obj){
-			return false;
-		}
-		return true;
-	}
-	
-	//面板模型
-	iTouch.Panel=function(opt,itouch){
-		for(var k in opt){
-			this[k]=opt[k];
-		}
-		this.destroy=false;
-		this.model=itouch;
-	}
-	iTouch.Panel.prototype={
-		constructor: iTouch.Panel,
-		render: function(callback){
-			var _this=this;
-			
-			//添加Panel到页面
-			if(this.element){
-				//静态元素
-				doRender($(this.element)[0],false);
-			}else{
-				//模板元素
-				//销毁
-				this.destroy=true;
-				
-				var parames=getParams();
-				var url=parames?(this.json+"?"+$.param(parames)):this.json;
-				var _template=this.template;
-				
-				//填充数据并添加到页面
-				$.get(url,function(data){
-					var json=$.parseJSON(data);
-					var htmlStr=$(_template).mustache(json);
-					var panelElem=$(htmlStr)[0];
-					$(panelElem).appendTo('#content');
-					doRender(panelElem,true);
-					
-					//init role type
-					_this.model.InitRoleType(panelElem);
-				})
-			}
-			//渲染页面
-			function doRender(panelElem,destroy){
-				//创建UUID
-				var uuid=$(panelElem).data("uuid"); // $.uuid();
-				if(!uuid){
-					uuid=$.uuid();
-					_this.uuid=uuid;
-					panelElem.setAttribute("id",uuid);
-					$(panelElem).data("uuid",true);
-				}
-				
-				//callback && init
-				callback&&callback(panelElem,_this.uuid,destroy,_this);
-				_this.init&&_this.init(_this);
-			}
-		},
-		refresh:function(newelm){
-			this.model.InitRoleType(newelm);
-		}
-	}
-	
 	window.iTouch=iTouch;
-})(window)
-
-//初始化页面
-$(function(){
-	//取消touchmove时的默认动作
-	document.addEventListener('touchmove', function(e){ e.preventDefault(); });
-	
-	//翻转屏幕时重置内容区高度
-	function setContentHeight(){
-		var contentHight=$(window).height();
-		$("#content").height(contentHight);
-	}
-	setContentHeight();
-	window.addEventListener('orientationchange', setContentHeight, false);
-});
-
+})(window,Zepto);
