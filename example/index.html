@@ -10,7 +10,7 @@
 		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<link rel="stylesheet" href="itouch/iTouch.css" type="text/css" />
+		<link rel="stylesheet" href="../src/itouch.css" type="text/css" />
 		<link rel="stylesheet" href="css/style.css" type="text/css" />
 	</head>
 <body>
@@ -270,7 +270,7 @@
 <script src="js/zepto.js"></script>
 <script src="js/mustache.min.js"></script>
 <script src="js/iscroll.min.js"></script>
-<script src="itouch/iTouch.js"></script>
+<script src="../src/itouch.js"></script>
 <script type="text/javascript">
 $(function(){
 	//初始化页面
@@ -298,7 +298,7 @@ $(function(){
 			var panelEle=$(ele);
 			scroller=creatScroll(panelEle.find(".panel-content")[0], panelObj);
 
-			$.get("/m/json/list.json",function(json){
+			$.get("/json/list.json",function(json){
 				var data=$.parseJSON(json);
 				var htmlStr=$("#Temp_prolist").mustache(data);
 				var newElm=$(htmlStr);

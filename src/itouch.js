@@ -11,6 +11,7 @@
 			historyStates=[], //历史记录
 			defaults = {
 				debug: false,
+				animation: true,
                 defaultAnimation: 'slideleft',
                 animationDelay: 400,
                 loadingStart: function(){
@@ -24,11 +25,11 @@
 		
 		var settings = {};
 		for(var k in defaults){
-			settings[k] = options[k] || defaults[k]
+			settings[k] = (options[k] !== undefined) ? options[k] : defaults[k]
 		}
 		//动画后执行时间
 		settings.animationDelay += 10;
-		
+
 		//路由集合
 		var Router={};
 		Router.collection={};
@@ -246,6 +247,7 @@
 			
 			historyStates=_states.slice(0,_states.length-1);
 			
+			return true;
 		}
 		
 		//回首页
@@ -405,10 +407,16 @@
 		        return false;
 		    }
 		
-		    // Error check for fromPage===toPage
+		    // 已是当前页
 		    if (toPage.hasClass('current')) {        
-		    	throw('You are already on the page you are trying to navigate to.');
 		        return false;
+		    }
+		    
+		    //无需动画或禁用动画
+		    if(animation === 'none' || settings.animation === false){
+		    	fromPage.removeClass('current');
+		    	toPage.addClass('current');
+		    	return false;
 		    }
 		    
 		    var finalAnimationName=animation;
@@ -487,8 +495,10 @@
 			Panel: Panel,
 			Router: Router,
 			getParames: getParames,
-			goHomePage: goHomePage
+			goHome: goHomePage,
+			goBack: doHistoryBack
 		}
+
 		return publicObj;
 	};
 	
