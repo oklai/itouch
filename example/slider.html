@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<title>zepto slider</title>
+	<style type="text/css" media="screen">
+		*{margin:0;padding:0}
+		ul{list-style:none}
+		.sliderWrap{width:400px; height:112px;margin:0 auto; overflow:hidden;margin-bottom:50px}
+		.slider img{width:100%}
+		.slider{}
+		.slider > *{
+		 width:400px;
+		 height: 112px;
+		}
+		
+		#demo1.slider > *{
+			float:left;
+		}
+		
+	</style>
+</head>
+<body>
+
+<div class="sliderWrap">
+	<ul class="slider" id="demo1">
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+	</ul>
+</div>
+
+<div class="sliderWrap">
+	<ul class="slider" id="demo2">
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+	</ul>
+</div>
+
+
+<p id="log"></p>
+
+<script src="../libs/zepto.js"></script>
+<script src="../plugins/zepto.slider.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#demo1').slider()
+	
+
+	
+	$('#demo2').slider({
+		horizontal: true
+	})
+
+})
+</script>
+</body>
+</html>
