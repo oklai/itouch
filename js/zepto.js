@@ -1331,16 +1331,6 @@ window.Zepto = Zepto
     longTapTimeout = null
   }
 
-  var secondTapTimeout;
-  function triggerTap(touch){
-  	if(secondTapTimeout){
-  		clearTimeout(secondTapTimeout);
-  	}
-  	secondTapTimeout=setTimeout(function(){
-  		touch.el.trigger('tap');	
-  	},50);
-  }
-
   $(document).ready(function(){
   	
     var now, delta
@@ -1377,8 +1367,7 @@ window.Zepto = Zepto
 
       // normal tap
       } else if ('last' in touch) {
-        //touch.el.trigger('tap')
-		triggerTap(touch)
+        touch.el.trigger('tap');
 		
         touchTimeout = setTimeout(function(){
           touchTimeout = null
