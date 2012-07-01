@@ -508,3 +508,18 @@
 	}
 	window.iTouch=iTouch;
 })(window,Zepto);
+
+//zepto mustache plugins
+;(function($){
+ $.mustache = function (template, view, partials) {
+    return Mustache.render(template, view, partials);
+  };
+
+  $.fn.mustache = function (view, partials) {
+    return $(this).map(function (i, elm) {
+      var template = $(elm).html();
+      return $.mustache(template, view, partials);
+    })[0];
+  };
+
+})(Zepto);
