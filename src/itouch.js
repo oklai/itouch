@@ -509,7 +509,7 @@
 	window.iTouch=iTouch;
 })(window,Zepto);
 
-//zepto mustache plugins
+//mustache plugin for zepto
 ;(function($){
  $.mustache = function (template, view, partials) {
     return Mustache.render(template, view, partials);
