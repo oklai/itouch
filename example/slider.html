@@ -7,14 +7,22 @@
 	<title>zepto slider</title>
 	<style type="text/css" media="screen">
 		*{margin:0;padding:0}
+		body{
+			-webkit-user-select: none;
+			-webkit-user-drag: none
+		}
 		ul{list-style:none}
-		.sliderWrap{width:400px; height:112px;margin:0 auto; overflow:hidden;margin-bottom:50px}
+		.sliderWrap{width:400px; height:112px;margin:0 auto; overflow:hidden;margin-bottom:50px;position:relative}
 		.slider img{width:100%}
 		.slider{}
 		.slider > *{
 		 width:400px;
 		 height: 112px;
 		}
+		
+		.controler{position:absolute; left:0; right:0; bottom:0; background-color:rgba(0,0,0,0.5); text-align:center;}
+		.controler span{overflow:hidden; display:inline-block; margin:0 2px; width:8px; height:8px; border-radius:4px; background-color:#000; line-height:200px;}
+		.controler span.current{background-color:#E72020;}
 		
 		#demo1.slider > *{
 			float:left;
@@ -30,6 +38,11 @@
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 	</ul>
+	<div class="controler" id="controler1">
+		<span class="current">1</span>
+		<span>2</span>
+		<span>3</span>
+	</div>
 </div>
 
 <div class="sliderWrap">
@@ -38,6 +51,11 @@
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 	</ul>
+	<div class="controler" id="controler2">
+		<span class="current">1</span>
+		<span>2</span>
+		<span>3</span>
+	</div>
 </div>
 
 
@@ -47,14 +65,17 @@
 <script src="../plugins/zepto.slider.js"></script>
 <script type="text/javascript">
 $(function(){
-	$('#demo1').slider()
-	
+	$('#demo1').slider({
+		autoslide: true,
+		interval: 4000,
+		controler: $('#controler1')
+	});
 
-	
 	$('#demo2').slider({
-		horizontal: true
+		horizontal: true,
+		loop: true,
+		controler: $('#controler2')
 	})
-
 })
 </script>
 </body>

@@ -2,8 +2,8 @@
 
 ###在页面上引用一下文件:
 ```
-<link rel="stylesheet" href="itouch/itouch.css" type="text/css" />
-<script src="itouch/itouch.js"></script>
+<link rel="stylesheet" href="your-path/itouch.css" type="text/css" />
+<script src="your-path/itouch.js"></script>
 ```
 
 ###面板页面HTML片段：
