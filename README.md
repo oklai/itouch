@@ -53,15 +53,15 @@ MyApp.Router.extend({
 
 #iTouch Document
 ##new iTouch(settings)
----------------------------------------
 ###indexPanel 
-*[zepto object]* 
-Default: $("#content > .current")[0]
+*[zepto object]*  
+Default: $("#content > .current")[0]  
+
 设定首页面
 
 ###animation 
 *[Boolean]*
-Default: true 
+Default: true  
 开启或关闭页面切换动画效果
 
 ###defaultAnimation 
