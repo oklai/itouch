@@ -28,9 +28,10 @@
 ```
 var MyApp=new iTouch({
 		indexPanel:$("#index"), //设定首页
+		debug: true
 	});
   
-  //创建页面
+//创建页面
 var page1=MyApp.Panel.extend({
 	element:$('#page_1'),
 	init: function(panel){
@@ -48,7 +49,7 @@ var page2=MyApp.Panel.extend({
 })
 
 var page3=MyApp.Panel.extend({
-	url:'http://oklai.name/m/card.html',
+	url:'/m/card.html',
 	dataType: 'html',
 	init: function(ele, panelObj){
 		//TODO
@@ -94,20 +95,20 @@ Default: 'slideleft'
 Default: 400     
 动画缓动时间  
 
-**loadingStart**   
-*[Function]*
-Default: 创建loader效果  
-页面开始载入时执行方法，可以在这里重置默认的loader效果
+**loadingStart**     
+*[Function]*  
+Default: 创建loader效果    
+页面开始载入时执行方法，可以在这里重置默认的loader效果  
 
-**loadingEnd**   
-*[Function]*
-Default: 移除loader效果  
-页面载入结束时执行方法
+**loadingEnd**     
+*[Function]*  
+Default: 移除loader效果    
+页面载入结束时执行方法  
 
-**debug**   
-*[Boolean]*
-Default: false  
-开启关闭调试信息，开启后可以使用MyApp.warn(msg)输出调试信息
+**debug**     
+*[Boolean]*  
+Default: false    
+开启关闭调试信息，开启后可以使用MyApp.warn(msg)输出调试信息  
 
 
 
