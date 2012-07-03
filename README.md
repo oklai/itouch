@@ -34,13 +34,24 @@ var MyApp=new iTouch({
 var page1=MyApp.Panel.extend({
 	element:$('#page_1'),
 	init: function(panel){
-		//console.log('page1 has show')
+		//TODO
 	}
 })
+
 var page2=MyApp.Panel.extend({
-	element:$('#page_1'),
-	init: function(panel){
-		//console.log('page1 has show')
+	template:$('#page_2'),
+	url:'http://oklai.name/m/json/view.php',
+	dataType: 'jsonp',
+	init: function(ele, panelObj){
+		//TODO
+	}
+})
+
+var page3=MyApp.Panel.extend({
+	url:'http://oklai.name/m/card.html',
+	dataType: 'html',
+	init: function(ele, panelObj){
+		//TODO
 	}
 })
 
@@ -48,6 +59,7 @@ var page2=MyApp.Panel.extend({
 MyApp.Router.extend({
 	'/list/':page1,
 	'/view/':page2,
+	'/card/':page3
 });
 ```
 
@@ -55,11 +67,11 @@ MyApp.Router.extend({
 ##iTouch实例
 ###new iTouch(settings)
 ```
-	//创建App
-	var MyApp=new iTouch({
-		indexPanel:$("#index"),
-		debug: true
-	});
+//创建iTouch实例
+var MyApp=new iTouch({
+	indexPanel:$("#index"),
+	debug: true
+});
 ```
 
 **indexPanel**  
