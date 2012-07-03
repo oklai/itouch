@@ -54,9 +54,10 @@ MyApp.Router.extend({
 #文档说明
 ##iTouch实例
 ###new iTouch(settings)
-**indexPanel** *[zepto object]*     
-Default: $("#content > .current")[0]  
-设定首页面  
+	**indexPanel**  
+	*[zepto object]*   
+	Default: $("#content > .current")[0]  
+	设定首页面  
 
 **animation**   
 *[Boolean]*  
