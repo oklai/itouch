@@ -53,7 +53,7 @@ MyApp.Router.extend({
 
 #iTouch Document
 ##new iTouch(settings)
-###indexPanel 
+**indexPanel** 
 *[zepto object]*  
 Default: $("#content > .current")[0]  
 设定首页面
@@ -75,17 +75,17 @@ Default: 400
 
 ###loadingStart 
 *[Function]*
-Default: 创建loader效果 
+Default: 创建loader效果  
 页面开始载入时执行方法，可以在这里重置默认的loader效果
 
 ###loadingEnd 
 *[Function]*
-Default: 移除loader效果   
+Default: 移除loader效果  
 页面载入结束时执行方法
 
 ###debug 
 *[Boolean]*
-Default: false   
+Default: false  
 开启关闭调试信息，开启后可以使用MyApp.warn(msg)输出调试信息
 
 
