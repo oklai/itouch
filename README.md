@@ -54,32 +54,39 @@ MyApp.Router.extend({
 #iTouch Document
 ##new iTouch(settings)
 ---------------------------------------
-###indexPanel *[zepto object]*
+###indexPanel 
+*[zepto object]* 
 Default: $("#content > .current")[0]
 设定首页面
 
-###animation *[Boolean]*
-Default: true
+###animation 
+*[Boolean]*
+Default: true 
 开启或关闭页面切换动画效果
 
-###defaultAnimation *[String]*
-Default: 'slideleft'
+###defaultAnimation 
+*[String]*
+Default: 'slideleft' 
 默认动画效果
 
-###animationDelay *[Int]*
-Default: 400
-动画缓动时间
+###animationDelay 
+*[Int]*
+Default: 400 
+动画缓动时间 
 
-###loadingStart *[Function]*
-Default: 创建loader效果
+###loadingStart 
+*[Function]*
+Default: 创建loader效果 
 页面开始载入时执行方法，可以在这里重置默认的loader效果
 
-###loadingEnd *[Function]*
-Default: 移除loader效果
+###loadingEnd 
+*[Function]*
+Default: 移除loader效果 
 页面载入结束时执行方法
 
-###debug *[Boolean]*
-Default: false
+###debug 
+*[Boolean]*
+Default: false 
 开启关闭调试信息，开启后可以使用MyApp.warn(msg)输出调试信息
 
 
