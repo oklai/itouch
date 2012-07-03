@@ -51,8 +51,8 @@ MyApp.Router.extend({
 });
 ```
 
-#iTouch Document
-##new iTouch(settings)
+#iTouch对象API
+###new iTouch(settings)
 **indexPanel**   
 *[zepto object]*   
 Default: $("#content > .current")[0]  
@@ -63,10 +63,10 @@ Default: $("#content > .current")[0]
 Default: true   
 开启或关闭页面切换动画效果  
 
-###defaultAnimation 
-*[String]*
-Default: 'slideleft'  
-默认动画效果
+####defaultAnimation 
+*[String]*  
+Default: 'slideleft'    
+默认动画效果  
 
 ###animationDelay 
 *[Int]*
