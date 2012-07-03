@@ -2,9 +2,7 @@
 	"use strict"
 	
 	var Slider = function(node,options){
-		//horizontal vertical
-		//autoslip
-		//interval
+		
 		this.sliderWrap = $(node);
 		this.childs = this.sliderWrap.children();
 		this.childsNum = this.childs.length;
@@ -16,14 +14,17 @@
 		this.sliderWidth = this.sliderWrap.parent().width();
 		
 		var defaultOptions = {
-			vertical: true,		//水平滑动
-			horizontal: false,	//垂直滑动
+			horizontal: true,	//水平滑动(默认)
+			vertical: false,	//垂直滑动
 			autoslide: false,	//自动模式
 			interval: 5000, 	//自动滑动时间间隔,
 			loop: false,		//循环滑动
 			animationDelay: 300,//缓动时间
-			animationTiming: 'ease-out'
-		}
+			animationTiming: 'ease-out',	//缓动函数
+			controler: null, 	//控制器
+			controlerAction: false
+		};
+		var _this = this;
 		
 		this.opts = $.extend(defaultOptions, options);
 		if(this.opts.autoslide) this.opts.loop = true;
@@ -33,40 +34,46 @@
 		this.activeChild.addClass('current');
 		if(this.opts.controler) this.opts.controler.children().eq(0).addClass('current');
 		
-		this.ortFix = this.opts.horizontal ? 'translateY' : 'translateX';
-		this.valueUnit = this.opts.horizontal ? this.sliderHeight : this.sliderWidth;
+		this.ortFix = this.opts.vertical ? 'translateY' : 'translateX';
+		this.valueUnit = this.opts.vertical ? this.sliderHeight : this.sliderWidth;
 		this.offset = 0;
 
 		this.sliderWrap[0].style.webkitTransition ='-webkit-transform ' + this.opts.animationDelay +'ms '+ this.opts.animationTiming;
-		this.sliderWrap[0].style[this.opts.horizontal ? 'height' : 'width'] = this.valueUnit * this.childsNum + 'px';
+		this.sliderWrap[0].style[this.opts.vertical ? 'height' : 'width'] = this.valueUnit * this.childsNum + 'px';
 
 		this.sliderWrap.bind('touchmove', function(e){
 			e.preventDefault();
 		})
 		
-		this.init();
+		//绑定touch事件
+		this.initTouchEvent();
 		
-		//自动切换
+		//自动滑动
 		this.slideInterval;
 		if(this.opts.autoslide){
-			turnNext.call(this);
+			this.autoNext();
 		}
-
-		function turnNext(){
-			var _this = this;
-			_this.slideInterval = setInterval(function(){
-				_this.slideNext();
-			}, _this.opts.interval)
+		
+		//绑定控制器
+		var controler = this.opts.controler;
+		if(controler){
+			controler.children().each(function(index){
+				$(this).bind('tap click',function(){
+					clearInterval(_this.slideInterval);
+					_this.setActive(index + 1);
+					_this.autoNext();
+				})
+			})
 		}
-
+		
 	}
 	
 	Slider.prototype ={
 		constructor: Slider,
-		init: function(){
+		initTouchEvent: function(){
 			
-			var doNextEvent = this.opts.horizontal ? 'swipeUp' : 'swipeLeft',
-				doPrevEvent = this.opts.horizontal ? 'swipeDown' : 'swipeRight';
+			var doNextEvent = this.opts.vertical ? 'swipeUp' : 'swipeLeft',
+				doPrevEvent = this.opts.vertical ? 'swipeDown' : 'swipeRight';
 			
 			var _this = this;
 			this.sliderWrap
@@ -87,11 +94,13 @@
 				.bind("touchstart",function(e){
 					startX=e.targetTouches[0].pageX;
 					startY=e.targetTouches[0].pageY;
+					_this.opts.autoslide &&  clearInterval(_this.slideInterval);
 				})
-				.bind("touchmove",touchMove)
+				.bind("touchmove", touchMove)
 				.bind("touchend", function(){
-					startX=0
-					startY=0
+					startX=0;
+					startY=0;
+					_this.opts.autoslide && _this.autoNext();
 				})
 
 			function touchMove(event) {
@@ -99,17 +108,22 @@
 			    curX = touch.pageX - startX;
 			    curY = touch.pageY - startY;
 			    
-			    var curOffset = _this.opts.horizontal ? curY : curX;
-			    //在循环滑动模式下
-			    if(!_this.opts.loop){
-				    if(_this.activeOrder === _this.childsNum && curOffset < 0){
-				    	curOffset = -20;
-				    };
-				    if(_this.activeOrder === 1 && curOffset > 0){
-				    	curOffset = 20;
-				    }
-			    }
+			    //在水平模式时上下滑动或在垂直模式时左右滑动，复位
+			    if((_this.opts.vertical && Math.abs(curY) < Math.abs(curX)) || (_this.opts.horizontal && Math.abs(curX) < Math.abs(curY))){
+			    	_this.sliderWrap[0].style.webkitTransform = _this.ortFix + '('+ _this.offset +'px)';
+			    	return false;
+			    };
 			    
+			    var curOffset = _this.opts.vertical ? curY : curX;
+			    
+			    //在末页或首页时
+			    if(_this.activeOrder === _this.childsNum && curOffset < 0){
+			    	curOffset = -20;
+			    };
+			    if(_this.activeOrder === 1 && curOffset > 0){
+			    	curOffset = 20;
+			    }
+
 			    var offsetVal = _this.offset + curOffset;
 			   	_this.sliderWrap[0].style.webkitTransform = _this.ortFix + '('+ offsetVal + 'px)';
 			}
@@ -127,11 +141,7 @@
 				return false
 			}
 			
-			var value = this.offset - this.valueUnit;
-			this.offset = value;
-			
-			this.sliderWrap[0].style.webkitTransform = this.ortFix + '('+ value +'px)';
-			this.setActive(1);
+			this.setActive(this.activeOrder + 1);
 
 		},
 		slidePrev: function(){
@@ -146,23 +156,30 @@
 				return false
 			}
 			
-			var value = this.offset + this.valueUnit;
-			this.offset = value;
-			
-			this.sliderWrap[0].style.webkitTransform = this.ortFix + '('+ value +'px)';
-			this.setActive(-1);
+			this.setActive(this.activeOrder - 1);
 		},
-		setActive: function(num){
+		setActive: function(order){
 			//删除上一个当前元素样式
 			this.activeChild.removeClass('current');
 			
 			//设定当前元素
-			var activeOrder = this.activeOrder + num;
+			var activeOrder = order;
+			
+			var offsetVal = - (this.valueUnit * (order - 1));
+			this.offset = offsetVal;
+			this.sliderWrap[0].style.webkitTransform = this.ortFix + '('+ offsetVal +'px)';
+			
 			this.activeOrder = activeOrder;
 			this.activeChild = this.childs.eq(activeOrder - 1);
 			this.activeChild.addClass('current');
 			
 			this.setControler(activeOrder);
+		},
+		autoNext: function(){
+			var _this = this;
+			this.slideInterval = setInterval(function(){
+				_this.slideNext()
+			}, this.opts.interval)
 		},
 		slideToFirst: function(){
 			//删除上一个当前元素样式
@@ -218,9 +235,7 @@
 			  }
 		})
 	}
-	
-	
-	
+
 	function getuuid(){
         var S4 = function () {
             return (((1+Math.random())*0x10000)|0).toString(16).substring(1);

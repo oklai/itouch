@@ -12,7 +12,8 @@
 			-webkit-user-drag: none
 		}
 		ul{list-style:none}
-		.sliderWrap{width:400px; height:112px;margin:0 auto; overflow:hidden;margin-bottom:50px;position:relative}
+		.title{width:400px;margin:0 auto;margin-top:50px;}
+		.sliderWrap{width:400px; height:112px;margin:0 auto; overflow:hidden;position:relative}
 		.slider img{width:100%}
 		.slider{}
 		.slider > *{
@@ -24,16 +25,18 @@
 		.controler span{overflow:hidden; display:inline-block; margin:0 2px; width:8px; height:8px; border-radius:4px; background-color:#000; line-height:200px;}
 		.controler span.current{background-color:#E72020;}
 		
-		#demo1.slider > *{
+		#demo1.slider > *,#demo3.slider > *{
 			float:left;
 		}
 		
 	</style>
 </head>
 <body>
-
+<p class="title">循环水平滑动（自动执行）</p>
 <div class="sliderWrap">
 	<ul class="slider" id="demo1">
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
@@ -42,11 +45,15 @@
 		<span class="current">1</span>
 		<span>2</span>
 		<span>3</span>
+		<span>4</span>
+		<span>5</span>
 	</div>
 </div>
-
+<p class="title">循环垂直滑动</p>
 <div class="sliderWrap">
 	<ul class="slider" id="demo2">
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
 		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
@@ -55,9 +62,27 @@
 		<span class="current">1</span>
 		<span>2</span>
 		<span>3</span>
+		<span>4</span>
+		<span>5</span>
 	</div>
 </div>
-
+<p class="title">非循环水平滑动</p>
+<div class="sliderWrap">
+	<ul class="slider" id="demo3">
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+		<li><img src="http://static.gtimg.com/img/opr/201206/19/stg/xiapu1.jpg" alt="" /></li>
+	</ul>
+	<div class="controler" id="controler3">
+		<span class="current">1</span>
+		<span>2</span>
+		<span>3</span>
+		<span>4</span>
+		<span>5</span>
+	</div>
+</div>
 
 <p id="log"></p>
 
@@ -67,14 +92,18 @@
 $(function(){
 	$('#demo1').slider({
 		autoslide: true,
-		interval: 4000,
+		interval: 3000,
 		controler: $('#controler1')
 	});
 
 	$('#demo2').slider({
-		horizontal: true,
+		vertical: true,
 		loop: true,
 		controler: $('#controler2')
+	})
+
+	$('#demo3').slider({
+		controler: $('#controler3')
 	})
 })
 </script>
