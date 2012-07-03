@@ -12,15 +12,15 @@
 			defaults = {
 				debug: false,
 				animation: true,
-                defaultAnimation: 'slideleft',
-                animationDelay: 400,
-                loadingStart: function(){
-                	var loadingHTML = '<div class="itouch-loader"><span class="itouch-icon-loading spin"></span></div>';
-                	$(loadingHTML).appendTo(document.body);
-                },
-                loadingEnd: function(){
-                	$('.itouch-loader').remove();
-                }
+				defaultAnimation: 'slideleft',
+				animationDelay: 400,
+				loadingStart: function(){
+					var loadingHTML = '<div class="itouch-loader"><span class="itouch-icon-loading spin"></span></div>';
+					$(loadingHTML).appendTo(document.body);
+				},
+				loadingEnd: function(){
+					$('.itouch-loader').remove();
+				}
 			}
 		
 		var settings = {};
