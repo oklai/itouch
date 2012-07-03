@@ -56,7 +56,6 @@ MyApp.Router.extend({
 ###indexPanel 
 *[zepto object]*  
 Default: $("#content > .current")[0]  
-
 设定首页面
 
 ###animation 
@@ -66,12 +65,12 @@ Default: true
 
 ###defaultAnimation 
 *[String]*
-Default: 'slideleft' 
+Default: 'slideleft'  
 默认动画效果
 
 ###animationDelay 
 *[Int]*
-Default: 400 
+Default: 400   
 动画缓动时间 
 
 ###loadingStart 
@@ -81,12 +80,12 @@ Default: 创建loader效果
 
 ###loadingEnd 
 *[Function]*
-Default: 移除loader效果 
+Default: 移除loader效果   
 页面载入结束时执行方法
 
 ###debug 
 *[Boolean]*
-Default: false 
+Default: false   
 开启关闭调试信息，开启后可以使用MyApp.warn(msg)输出调试信息
 
 
