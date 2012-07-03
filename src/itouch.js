@@ -496,7 +496,8 @@
 			Router: Router,
 			getParames: getParames,
 			goHome: goHomePage,
-			goBack: doHistoryBack
+			goBack: doHistoryBack,
+			log: warn 
 		}
 
 		return publicObj;

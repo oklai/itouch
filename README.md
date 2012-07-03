@@ -108,7 +108,7 @@ Default: 移除loader效果
 **debug**     
 *[Boolean]*  
 Default: false    
-开启关闭调试信息，开启后可以使用MyApp.warn(msg)输出调试信息  
+开启关闭调试信息，开启后可以使用MyApp.log(msg)输出调试信息  
 
 
 
