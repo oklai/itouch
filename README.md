@@ -67,6 +67,8 @@ MyApp.Router.extend({
 #文档说明
 ##iTouch实例
 ###new iTouch(settings)
+返回一个itouch对象  
+
 ```
 //创建iTouch实例
 var MyApp=new iTouch({
@@ -74,6 +76,8 @@ var MyApp=new iTouch({
 	debug: true
 });
 ```
+
+settings属性说明：  
 
 **indexPanel**  
 *[zepto object]*   
@@ -110,9 +114,91 @@ Default: 移除loader效果
 Default: false    
 开启关闭调试信息，开启后可以使用MyApp.log(msg)输出调试信息  
 
+###itouch扩展方法说明：  
+```
+var MyApp=new iTouch()
+console.log(MyApp)
+//return 	
+//{
+//	Panel: *[Function]*,
+//	Router: *[Object]*,
+//	getParames: *[Function]*,
+//	goHome: *[Function]*,
+//	goBack: *[Function]*,
+//	log: *[Function]*
+//}
+```
 
+**Panel**  
+MyApp.Panel.extend(options)  
+return: *[panel object]*
+页面对象  
 
+**Router**  
+MyApp.Router.extend(collection)  
+MyApp.Router.add(url, panel)  
+路由集合
 
+**getParames**  
+MyApp.getParames()  
+return: *[parames object]*  
+获取当前url参数  
+
+**goHome**  
+MyApp.goHome()  
+返回首页  
+
+**goBack**  
+MyApp.goBack()  
+返回上一页  
+
+**log**  
+MyApp.log(msg)  
+直接在页面上输出msg，用于调试应用  
+
+##创建页面对象
+###MyApp.Panel.extend(options)
+```
+//创建页面对象
+var detailPage=MyApp.Panel.extend({
+	template:$('#Temp_detail'),
+	url:'/m/itouch/example/json/detail.json',
+	dataType: 'json',
+	init: function(element, panelObj){
+		//TODO
+	}
+});	
+```
+options属性说明：  
+
+**element**  
+*[zepto object]*  
+Default: none  
+指定某个DOM元素为页面对象  
+
+**template**  
+*[zepto object]*  
+Default: none  
+指定某个DOM元素的内容为一个模板，在获取数据后将生成一个页面并插入至App中。  
+注意：element属性与template必须设定其中一个，使用template属性时必须指定数据源。  
+
+**url**  
+*[String]*  
+Default: none  
+数据源地址。使用模板生成页面时必须设定url。  
+
+**dataType**  
+*[String]*  
+Default: json  
+数据类型。可选值有：json、jsonp、html  
+当dataType为html时，可以不设定element属性或template属性，将会把Ajax载入的html内容设为一个页面对象。  
+
+**init**  
+*[Function]*  
+Default: none  
+回调函数，将在页面完成切换后执行，拥有两个参数。  
+第一个参数：*[zepto object]*,当前页面DOM对象  
+第二个参数：*[Panel object]*,页面模型对象
 
 
 

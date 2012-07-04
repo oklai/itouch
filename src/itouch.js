@@ -44,6 +44,13 @@
 		
 		//创建Panel
 		var Panel=function(opt){
+			// opt:{
+				// element: [zepto object],
+				// template: [zepto object],
+				// url: [String],
+				// dataType: [json || jsonp || html],
+				// init: [Function]
+			// }
 			for(var k in opt){
 				this[k]=opt[k];
 			}
