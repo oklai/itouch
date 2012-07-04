@@ -174,7 +174,7 @@
 				</div>
 				<div class="preview_slider">
 					<ul>
-						<li><img src="http://oklai.name/m/pic/pic_2.jpg" alt="" /></li>
+						<li><img src="http://oklai.name/m/itouch/example/pic/pic_2.jpg" alt="" /></li>
 					</ul>
 				</div>
 				<div class="preview_foot">
@@ -298,8 +298,8 @@ $(function(){
 			var panelEle=$(ele);
 			scroller=creatScroll(panelEle.find(".panel-content")[0], panelObj);
 
-			$.get("/json/list.json",function(json){
-				var data=$.parseJSON(json);
+			$.get("/m/itouch/example/json/list.json",function(result){
+				var data=JSON.parse(result); //$.parseJSON(json);
 				var htmlStr=$("#Temp_prolist").mustache(data);
 				var newElm=$(htmlStr);
 				panelEle.find(".prolist").append(newElm);
@@ -310,10 +310,9 @@ $(function(){
 	});	
 	
 	var previewPage=MyApp.Panel.extend({
-		//element:$('.page_preview'),
 		template:$("#Temp_preview"),
-		url:"http://oklai.name/m/json/preview.php",
-		dataType: 'jsonp',
+		url:"/m/itouch/example/json/preview.json",
+		dataType: 'json',
 		init: function(ele, panelObj){
 			var panelEle=$(ele);
 			scroller=creatScroll(panelEle.find(".panel-content")[0], panelObj);
@@ -321,10 +320,9 @@ $(function(){
 	});	
 	
 	var detailPage=MyApp.Panel.extend({
-		//element:$('.page_detail'),
 		template:$('#Temp_detail'),
-		url:'http://oklai.name/m/json/detail.php',
-		dataType: 'jsonp',
+		url:'/m/itouch/example/json/detail.json',
+		dataType: 'json',
 		init: function(ele, panelObj){
 			var panelEle=$(ele);
 			scroller=creatScroll(panelEle.find(".panel-content")[0], panelObj);
@@ -332,7 +330,6 @@ $(function(){
 	});	
 	
 	var cardPage=MyApp.Panel.extend({
-		//element:$('.page_card'),
 		url: 'card.html',
 		dataType: 'html',
 		init: function(ele, panelObj){
@@ -348,9 +345,6 @@ $(function(){
 		'/card/':cardPage
 	});
 	
-	//console.log(listPage);
-	//console.log(MyApp.Router.collection['/card/']);
-	//console.log(MyApp.getParams());
 })
 </script>	
 </body>
