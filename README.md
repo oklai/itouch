@@ -67,7 +67,7 @@ MyApp.Router.extend({
 #文档说明
 ##iTouch实例
 ###new iTouch(settings)
-返回一个itouch对象  
+return: *[itouch object]*  
 
 ```
 //创建iTouch实例
@@ -77,7 +77,7 @@ var MyApp=new iTouch({
 });
 ```
 
-settings属性说明：  
+####settings属性说明：  
 
 **indexPanel**  
 *[zepto object]*   
@@ -114,7 +114,7 @@ Default: 移除loader效果
 Default: false    
 开启关闭调试信息，开启后可以使用MyApp.log(msg)输出调试信息  
 
-###itouch扩展方法说明：  
+###itouch对象属性说明：  
 ```
 var MyApp=new iTouch()
 console.log(MyApp)
@@ -131,7 +131,7 @@ console.log(MyApp)
 
 **Panel**  
 MyApp.Panel.extend(options)  
-return: *[panel object]*
+return: *[panel object]*  
 页面对象  
 
 **Router**  
