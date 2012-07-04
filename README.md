@@ -160,6 +160,13 @@ MyApp.log(msg)
 ###MyApp.Panel.extend(options)
 ```
 //创建页面对象
+var listPage=MyApp.Panel.extend({
+	element:$('#list'),
+	init: function(){
+		//TODO
+	}
+});	
+	
 var detailPage=MyApp.Panel.extend({
 	template:$('#Temp_detail'),
 	url:'/m/itouch/example/json/detail.json',
