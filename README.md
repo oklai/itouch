@@ -50,17 +50,14 @@ var page2=MyApp.Panel.extend({
 
 var page3=MyApp.Panel.extend({
 	url:'/m/card.html',
-	dataType: 'html',
-	init: function(ele, panelObj){
-		//TODO
-	}
+	dataType: 'html'
 })
 
 //绑定路由
 MyApp.Router.extend({
-	'/list/':page1,
-	'/view/':page2,
-	'/card/':page3
+	'/list':page1,
+	'/view':page2,
+	'/card':page3
 });
 ```
 
