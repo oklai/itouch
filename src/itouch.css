@@ -13,29 +13,6 @@
   overflow:hidden;
 }
 
-.panel-head{
-  height:50px;
-  width:100%;
-  line-height:50px;
-  position:absolute;
-  top:0;
-  text-align:center;
-  color:#FFF;
-}
-.panel-content{
-  position:absolute;
-  top:50px;
-  bottom:0;
-  width:100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
-.panel-content-inner{
-  position: absolute;
-  width: 100%;
-}
-
 /*调试信息*/
 .itouch-warn{
 	width:100%;

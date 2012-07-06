@@ -44,6 +44,24 @@ a{
 
 /*diy style*/
 .panel-head{
+  height:50px;
+  width:100%;
+  line-height:50px;
+  position:absolute;
+  top:0;
+  text-align:center;
+  color:#FFF;
+}
+.panel-content{
+  position:absolute;
+  top:50px;
+  bottom:0;
+  width:100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.panel-head{
   .backgroundMaker(#7d7e7d,#0e0e0e);
 }
 .panel-head h1{
@@ -52,6 +70,11 @@ a{
 }
 .panel-head .hd_leftbtn{position:absolute;top:50%;margin-top:-18px;left:10px}
 .panel-head .hd_rightbtn{position:absolute;top:50%;margin-top:-18px;right:10px}
+.panel-content-inner{
+  position: absolute;
+  width: 100%;
+}
+
 .index_nav{
   position:relative;height:42px;line-height:42px;
   .backgroundMaker(#FFFFFF,#eeeeee);
