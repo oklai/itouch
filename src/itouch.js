@@ -176,9 +176,17 @@
 			
 			//判断是否为根目录
 			if(url === '/') return Router.collection['/'];
+			if(url.lastIndexOf('/') > 0){
+				url = url.substring(0, url.lastIndexOf('/'))
+			}
 			
 			for(var k in Router.collection){
-				if(url.indexOf(k)===0&&k!=='/'){
+				//移除router url末端的斜杠
+				var k2 = k;
+				if(k.substring(k.length -1, k.length) === '/'){
+					k2 = k.substring(0, k.length -1)
+				}
+				if(url === k2){
 					return Router.collection[k];
 				}
 			}

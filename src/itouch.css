@@ -21,26 +21,18 @@
   top:0;
   text-align:center;
   color:#FFF;
-  z-index:2;
 }
-.panel-head h1{
-  font-size:20px;
-  font-weight:normal;
-}
-.panel-head .hd_leftbtn{position:absolute;top:50%;margin-top:-18px;left:10px}
-.panel-head .hd_rightbtn{position:absolute;top:50%;margin-top:-18px;right:10px}
-
 .panel-content{
   position:absolute;
   top:50px;
   bottom:0;
   width:100%;
-  z-index:1;
-  overflow:hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .panel-content-inner{
   position: absolute;
-  z-index: 1;
   width: 100%;
 }
 
@@ -114,23 +106,6 @@
 #content > :not(.current) {
   display: none;
 }
-/*#content.touchscroll:not(.animating3d) {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-#content.touchscroll:not(.animating3d) > * {
-  height: 100%;
-}
-#content.touchscroll:not(.animating3d) .scroll {
-  position: relative;
-  -webkit-box-flex: 1;
-  box-flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-#content .scroll {
-  -webkit-margin-collapse: separate;
-}*/
 #content .in, #content .out{
   -webkit-animation-duration: 400ms;
   -webkit-animation-fill-mode: both;
