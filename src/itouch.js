@@ -106,7 +106,11 @@
 				function doRender(panelElem){
 					//callback && init
 					callback&&callback(panelElem, _this);
-					_this.init&&_this.init(panelElem, _this);
+					if(_this.init && typeof(_this.init) === 'function'){
+						setTimeout(function(){
+							_this.init(panelElem, _this);
+						}, settings.animationDelay);
+					}
 				}
 			}
 		}
@@ -173,6 +177,8 @@
 
 		//获取路由
 		function getPanel(url){
+			
+			url = url.split('?')[0];
 			
 			//判断是否为根目录
 			if(url === '/') return Router.collection['/'];
