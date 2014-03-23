@@ -6,11 +6,8 @@
 		<meta name="author" content="ethanlai" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 		<meta name="apple-mobile-web-app-capable" content="yes">
-		<title>I Have U</title>
-		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<link rel="stylesheet" href="../src/itouch.css" type="text/css" />
+		<title>iTouch Demo</title>
+		<link rel="stylesheet" href="css/itouch.css" type="text/css" />
 		<link rel="stylesheet" href="css/style.css" type="text/css" />
 	</head>
 <body>
@@ -197,13 +194,17 @@
 </script>
 <!-- /详情页模板-->
 	
-<script src="../libs/zepto.js"></script>
-<script src="../libs/mustache.js"></script>
-<script src="../src/itouch.js"></script>
+<script src="js/zepto.js"></script>
+<script src="js/mustache.js"></script>
+<script src="js/itouch.js"></script>
 <script src="js/iscroll.min.js"></script>
 <script type="text/javascript">
 $(function(){
-	
+	// 非web服务器运行提示	
+	if (location.href.indexOf('http') === -1) {
+		alert('请在web服务器上部署此Demo.');
+	}
+
 	//创建app
 	var MyApp=new iTouch({
 		indexPanel:$("#index"),
